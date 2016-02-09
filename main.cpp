@@ -35,8 +35,5 @@ int main()
 
     cout << endl;
     */
-
-//Kerry's change
-
     return 0;
 }
