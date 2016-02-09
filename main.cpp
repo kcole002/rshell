@@ -10,7 +10,7 @@ vector<string> parse(string com)
 {
     vector<string> v;
 
-    char_separator<char> delim("", "|&#);");
+    char_separator<char> delim(" ", "|&#);");
     tokenizer< char_separator<char> >mytok(com, delim);
 
     for (tokenizer< char_separator<char> >::iterator it = mytok.begin(); it != mytok.end(); ++it)
@@ -36,7 +36,7 @@ void rshell()
 int main()
 { 
     // Test case for parse
-    
+    /*
     vector<string> test_vector;
     string test_string = "ls assignments | | cd CS100 && iss ; hello";   
 
@@ -48,7 +48,30 @@ int main()
     }
 
     cout << endl;
+    */
     
+    // Test case for Command Leaf class
+    
+    string a = "ls";
+    string b = "-a";
+    
+    vector<string> v1;
+
+    v1.push_back(a);
+    v1.push_back(b);
+
+    Shell_Base * A = new Command(v1);
+
+    A->execute();
   
     return 0;
 }
+
+
+
+
+
+
+
+
+
