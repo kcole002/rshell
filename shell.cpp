@@ -1,6 +1,11 @@
 #include <iostream>
 #include <stdio.h>
 #include <string>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <vector>
 
 using namespace std;
 
@@ -8,26 +13,65 @@ class Shell_Base
 {
 	public:
     virtual void execute() = 0;
-    virtual void print() = 0;
+   // virtual void print() = 0;
 };
 
 class Command : public Shell_Base
 {
     private:
-        string com;
+        vector<string> com;
 
     public:
         Command() : Shell_Base() {};
-        Command(string com) : Shell_Base()
+        Command(vector<string> com) : Shell_Base()
         {
             this->com = com;
         };
 
-    	void execute();
-        void print();
+    	void execute()
+        {
+            char * args[com.size() + 1];
+
+           // args[0] = (char*)com.c_str();
+           // args[1] = NULL;
+
+            for (unsigned i = 0; i < com.size(); i++)
+            {
+                args[i] = (char*)com.at(i).c_str();
+            }
+
+            args[com.size()] = NULL;
+
+            pid_t pid = fork();
+
+            if(pid == 0)
+            {
+                // child
+                cout << "child: " << pid << endl;
+                if (execvp(args[0], args) == -1)
+                {
+                    perror("exec");
+                }
+
+            }
+
+            if (pid > 0)
+            {
+                // parent
+                if (wait(0) == -1)
+                {
+                    perror("Wait");
+                }
+                cout << "parent: " << pid << endl;
+            }
+        };
+
+
+       // void print();
 
 };
 
+/*
 class Operator : public Shell_Base
 {
     protected:
@@ -89,7 +133,7 @@ class Semi : public Operator
 		void execute();
 		void print();
 };
-
+*/
 
 
 
