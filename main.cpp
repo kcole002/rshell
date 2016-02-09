@@ -13,7 +13,7 @@ vector<string> parse(string com)
     char_separator<char> delim("", "|&#);");
     tokenizer< char_separator<char> >mytok(com, delim);
 
-    for (auto it = mytok.begin(); it != mytok.end(); ++it)
+    for (tokenizer< char_separator<char> >::iterator it = mytok.begin(); it != mytok.end(); ++it)
         v.push_back(*it);
 
     return v;
@@ -36,7 +36,7 @@ void rshell()
 int main()
 { 
     // Test case for parse
-    /*
+    
     vector<string> test_vector;
     string test_string = "ls assignments | | cd CS100 && iss ; hello";   
 
@@ -48,7 +48,7 @@ int main()
     }
 
     cout << endl;
-    */
+    
   
     return 0;
 }
