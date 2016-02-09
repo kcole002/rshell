@@ -1,5 +1,5 @@
 COMPILE = g++
-FLAGS = -Wall -Werror -std=c++0x
+FLAGS = -Wall -Werror 
 PROGRAM = a.out
 OBJECTS = shell.o
 MAIN = main.cpp
