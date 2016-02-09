@@ -54,7 +54,7 @@ class Or : public Operator
 
         void execute()
 	{
-		if(execvp(
+	//	if(execvp(
 	};
         void print();
 };
@@ -73,9 +73,9 @@ class Hash : public Operator
 {
 	public:
 		Hash() : Operator() {};
-		Hash(Shell_Base* l, Shell_Base* r) : Operator(l, r) {};
+		Hash(Shell_Base* l, Shell_Base* r) : Operator(l, r) {}; //right child will be ignored
 
-		void execute();
+		void execute();  //exit after left child is executed.
 		void print();
 
 };
