@@ -19,6 +19,21 @@ vector<string> parse(string com)
     return v;
 };
 
+void rshell()
+{
+	string cmd;
+
+	cout << "$ ";
+	getline(cin, cmd);
+	cout << endl;
+	
+	parse(cmd);
+	`
+
+
+}
+
+
 int main()
 { 
     // Test case for parse
@@ -35,5 +50,6 @@ int main()
 
     cout << endl;
     */
+  
     return 0;
 }

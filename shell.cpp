@@ -1,9 +1,12 @@
 #include <iostream>
+#include <stdio.h>
+#include <string>
 
 using namespace std;
 
 class Shell_Base 
 {
+	public:
     virtual void execute() = 0;
     virtual void print() = 0;
 };
@@ -20,7 +23,7 @@ class Command : public Shell_Base
             this->com = com;
         };
 
-        void execute();
+    	void execute();
         void print();
 
 };
@@ -49,10 +52,43 @@ class Or : public Operator
         Or() : Operator() {};
         Or(Shell_Base * l, Shell_Base * r) : Operator(l, r) {};
 
-        void execute();
+        void execute()
+	{
+		if(execvp(
+	};
         void print();
 };
 
+class And : public Operator
+{
+	public:
+		And() : Operator() {};
+		And(Shell_Base* l, Shell_Base* r) : Operator(l, r) {};
+
+		void execute();
+		void print();
+};
+
+class Hash : public Operator
+{
+	public:
+		Hash() : Operator() {};
+		Hash(Shell_Base* l, Shell_Base* r) : Operator(l, r) {};
+
+		void execute();
+		void print();
+
+};
+
+class Semi : public Operator
+{
+	public:
+		Semi() : Operator() {};
+		Semi(Shell_Base* l, Shell_Base* r) : Operator(l, r) {};
+
+		void execute();
+		void print();
+};
 
 
 
