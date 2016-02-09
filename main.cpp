@@ -28,7 +28,6 @@ void rshell()
 	cout << endl;
 	
 	parse(cmd);
-	`
 
 
 }
