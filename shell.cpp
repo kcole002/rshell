@@ -146,12 +146,20 @@ class Or : public Operator
 
         void execute()
         {
-            if (executed == 0)
+            if (r != 0)
             {
-                r->execute();
+                if (executed == 0)
+                {
+                    r->execute();
 
-                if (r->get_executed() != 0)
-                    executed = 1;
+                    if (r->get_executed() != 0)
+                        executed = 1;
+                }
+            }
+
+            else
+            {
+                cout << "Error: no right child." << endl;
             }
         };
 
@@ -193,12 +201,20 @@ class And : public Operator
 
 		void execute()
         {
-            if (executed == 0)
+            if (r != 0)
             {
-                r->execute();
+                if (executed == 0)
+                {
+                    r->execute();
 
-                if (r->get_executed() != 0)
-                    executed = 1;
+                    if (r->get_executed() != 0)
+                        executed = 1;
+                }
+            }
+
+            else 
+            {
+                cout << "Error: no right child." << endl;
             }
         };
 };
@@ -217,9 +233,39 @@ class Semi : public Operator
 {
 	public:
 		Semi() : Operator() {};
-		Semi(Shell_Base* l, Shell_Base* r) : Operator(l, r) {};
+		Semi(Shell_Base* l, Shell_Base* r)
+        {
+            this->l = l;
+            this->r = r;
 
-		void execute();
+            executed = 0;
+        }
+
+        void set_left(Shell_Base * left)
+        {
+            l = left;
+        };
+
+        void set_right(Shell_Base * right)
+        {
+            r = right;
+        };
+
+		void execute()
+        {
+            if (r != 0)
+            {
+                r->execute();
+            
+                if (r->get_executed() != 0)
+                     executed = 1;
+            }
+            
+            else 
+            {
+                cout << "Error: no right child." << endl;
+            }
+        };
 };
 
 

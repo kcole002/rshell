@@ -134,9 +134,10 @@ int main()
     */
     
     // Test case for Command Leaf class
-    // DON'T FORGET TO DELETE OUTPUT FOR EXECUTE IN Command::execute()
-
-    string a = "ls";
+    // DELETE OUTPUT FOR EXECUTE IN Command::execute()
+    // DELETE OUTPUT STATEMENTS OF ELSE BRANCH OF execute() IN EVERY CLASS
+    
+    string a = "s";
     string b = "-a";
     
     vector<string> v1;
@@ -167,7 +168,7 @@ int main()
     v3.push_back(e);
     v3.push_back(f);
 
-    Shell_Base *C = new Command(v3);
+    Shell_Base * C = new Command(v3);
 
     cout << "executing child C:" << endl;
     C->execute(); cout << endl;
@@ -186,7 +187,7 @@ int main()
     */
 
     // Test case for And composite class (uses A, B, and C from Leaf class)
-    
+    /* 
     Shell_Base * F = new And(A,B);
 
     cout << "executing A && B:" << endl;
@@ -196,6 +197,21 @@ int main()
 
     cout << "executing (A && B) && C:" << endl;
     G->execute(); cout << endl;
+    */
+
+    // Test case for Semi composite class (uses A, B, and C from Leaf class)
+    /* 
+    Shell_Base * H = new Semi(A,B);
+
+    cout << "executing A;B:" << endl;
+    H->execute(); cout << endl;
+
+    Shell_Base * I = new Semi(H, C);
+
+    cout << "executing (A;B);C:" << endl;
+    I->execute(); cout << endl;
+    */
+
 
 	//print_parse(rshell());
   
