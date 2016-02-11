@@ -54,17 +54,27 @@ int main()
     
     string a = "ls";
     string b = "-a";
-    string c = "-l";
     
     vector<string> v1;
 
     v1.push_back(a);
     v1.push_back(b);
-    v1.push_back(c);
 
     Shell_Base * A = new Command(v1);
 
-    A->execute();
+    A->execute(); cout << endl;
+
+    string c = "&&";
+    string d = "-a";
+
+    vector<string> v2;
+    v2.push_back(c);
+    v2.push_back(d);
+
+    Shell_Base * B = new Command(v2);
+
+    B->execute(); cout << endl;
+    
   
     return 0;
 }
