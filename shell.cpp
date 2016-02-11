@@ -30,40 +30,43 @@ class Command : public Shell_Base
 
     	void execute()
         {
-            char * args[com.size() + 1];
+            if (com.size() != 0)
+            {    
+                char * args[com.size() + 1];
 
            // args[0] = (char*)com.c_str();
            // args[1] = NULL;
 
-            for (unsigned i = 0; i < com.size(); i++)
-            {
-                args[i] = (char*)com.at(i).c_str();
-            }
-
-            args[com.size()] = NULL;
-
-            pid_t pid = fork();
-
-            if(pid == 0)
-            {
-                // child
-                cout << "child: " << pid << endl;
-                if (execvp(args[0], args) == -1)
+                for (unsigned i = 0; i < com.size(); i++)
                 {
-                    perror("exec");
+                    args[i] = (char*)com.at(i).c_str();
+                }   
+
+                args[com.size()] = NULL;
+
+                pid_t pid = fork();
+
+                if(pid == 0)
+                {   
+                    // child
+                    cout << "child: " << pid << endl;
+                    if (execvp(args[0], args) == -1)
+                    {
+                        perror("exec");
+                    }
+
                 }
 
-            }
-
-            if (pid > 0)
-            {
-                // parent
-                if (wait(0) == -1)
+                if (pid > 0)
                 {
-                    perror("Wait");
+                    // parent
+                    if (wait(0) == -1)
+                    {
+                        perror("Wait");
+                    }
+                    cout << "parent: " << pid << endl;
                 }
-                cout << "parent: " << pid << endl;
-            }
+            }   
         };
 
 

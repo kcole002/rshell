@@ -137,11 +137,13 @@ int main()
     /*
     string a = "ls";
     string b = "-a";
+    string c = "-l";
     
     vector<string> v1;
 
     v1.push_back(a);
     v1.push_back(b);
+    v1.push_back(c);
 
     Shell_Base * A = new Command(v1);
 
