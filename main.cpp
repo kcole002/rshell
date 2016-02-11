@@ -15,9 +15,9 @@ void print_parse(vector<vector<string> > vec)
 		cout << endl;
 		return;
 	}
-	for(int i = 0; i < vec.size(); ++i)
+	for(unsigned i = 0; i < vec.size(); ++i)
 	{
-		for(int j = 0; j < (vec.at(i)).size(); ++j)
+		for(unsigned j = 0; j < (vec.at(i)).size(); ++j)
 		{
 			cout << (vec.at(i)).at(j) << " ";
 		}
@@ -41,7 +41,7 @@ vector<vector<string> > parse(string com)
 	v2.push_back(*it);			
     }
 
-    for(int i = 0; i < v2.size(); ++i)
+    for(unsigned i = 0; i < v2.size(); ++i)
     {
 
 	vector<string> v3;
@@ -99,7 +99,7 @@ vector<vector<string> > parse(string com)
 
     return v;
 
-};
+}
 
 vector<vector<string> >  rshell()
 {
@@ -134,8 +134,8 @@ int main()
     */
     
     // Test case for Command Leaf class
-    /*
-    string a = "ls";
+    
+    string a = "s";
     string b = "-a";
     
     vector<string> v1;
@@ -145,10 +145,10 @@ int main()
 
     Shell_Base * A = new Command(v1);
 
-<<<<<<< HEAD
+    cout << "executing child A:" << endl;
     A->execute(); cout << endl;
 
-    string c = "&&";
+    string c = "ls";
     string d = "-a";
 
     vector<string> v2;
@@ -157,13 +157,35 @@ int main()
 
     Shell_Base * B = new Command(v2);
 
-    B->execute(); cout << endl;
+    cout << "executing child B:" << endl;
+    B->execute(); cout << endl;    
     
-=======
-    A->execute();
-    */
+    string e = "echo";
+    string f = "I love Brian Crites.";
+    vector<string> v3;
+    v3.push_back(e);
+    v3.push_back(f);
 
-	print_parse(rshell());
+    Shell_Base *C = new Command(v3);
+
+    cout << "executing child C:" << endl;
+    C->execute(); cout << endl;
+
+    // Test case for Or composite class (uses both A and B from Leaf class)
+    // DON'T FORGET TO DELETE OUTPUT FOR EXECUTE IN Command::execute()
+
+    Shell_Base * D = new Or(A,B);
+
+    cout << "executing A || B:" << endl;
+    D->execute(); cout << endl; 
+
+    Shell_Base * E = new Or(D, C);
+
+    cout << "executing (A || B) || C:" << endl;
+    E->execute(); cout << endl;
+
+
+	//print_parse(rshell());
   
     return 0;
 }

@@ -1,5 +1,5 @@
 COMPILE = g++
-FLAGS = -Wall -Werror 
+FLAGS = -Wall -Werror -ansi -pedantic 
 PROGRAM = a.out
 OBJECTS = shell.o
 MAIN = main.cpp
@@ -13,7 +13,7 @@ all: $(OBJECTS)
 clean:
 	rm -f $(OBJECTS) $(PROGRAM)
 
-test:
+test: all
 	./$(PROGRAM)
 
 main: 

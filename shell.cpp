@@ -12,15 +12,24 @@ using namespace std;
 
 class Shell_Base 
 {
+    protected:
+    int executed;
+
 	public:
+    Shell_Base()
+    {
+        executed = 0;
+    };
+
     virtual void execute() = 0;
+    virtual int get_executed() = 0;
+    virtual void set_executed(int value) = 0;
 };
 
 class Command : public Shell_Base
 {
     private:
         vector<string> com;
-        int executed;
 
     public:
         Command() : Shell_Base() {};
@@ -33,8 +42,9 @@ class Command : public Shell_Base
     	void execute()
         {
             if (com.size() != 0)
-            {    
-                char * args[com.size() + 1];
+            {   
+                int size = com.size() + 1; 
+                char **args = new char*[size];
 
                 for (unsigned i = 0; i < com.size(); i++)
                 {
@@ -46,12 +56,12 @@ class Command : public Shell_Base
                 pid_t pid = fork();
 
                 if(pid < 0)
-                    perror("forking error");
+                {perror("forking error");}
 
                 if(pid == 0)
                 {   
                     // child
-                    cout << "child: " << pid << endl;
+                    //cout << "child: " << pid << endl;
                     int s = execvp(args[0], args);
                     
                     if (s == -1)
@@ -71,7 +81,7 @@ class Command : public Shell_Base
                     //cout << "status: " << status << endl;
                     executed = status;
 
-                    cout << "parent: " << pid << endl;
+                    //cout << "parent: " << pid << endl;
                 }
             }
 
@@ -82,9 +92,19 @@ class Command : public Shell_Base
             cout << "executed value: " << executed << endl;
         };
 
+        int get_executed()
+        {
+            return executed;
+        };
+
+        void set_executed(int value)
+        {
+            executed = value;
+        };
+
 };
 
-/*
+
 class Operator : public Shell_Base
 {
     protected:
@@ -99,21 +119,59 @@ class Operator : public Shell_Base
             this->r = r;
         };
 
+        int get_executed()
+        {
+            return executed;
+        }
+
+        virtual void set_executed(int value) = 0;
+
         virtual void execute() = 0;
-        virtual void print() = 0;
+        virtual void set_left(Shell_Base * left) = 0;
+        virtual void set_right(Shell_Base * right) = 0;
 };
 
 class Or : public Operator
 {
     public:
         Or() : Operator() {};
-        Or(Shell_Base * l, Shell_Base * r) : Operator(l, r) {};
+        Or(Shell_Base * l, Shell_Base * r)
+        {
+            this->l = l;
+            this->r = r;
+
+            if (l->get_executed() != 0)
+                executed = 0;
+
+            else if (l->get_executed() == 0)
+                executed = 1;
+        };
 
         void execute()
-	{
-	//	if(execvp(
-	};
-        void print();
+        {
+            if (executed == 0)
+            {
+                r->execute();
+
+                if (r->get_executed() != 0)
+                    executed = 1;
+            }
+        };
+
+        void set_left (Shell_Base * left)
+        {
+            l = left;
+        };
+
+        void set_right (Shell_Base * right)
+        {
+            r = right;
+        };
+
+        void set_executed(int value)
+        {
+            executed = value;
+        };
 };
 
 class And : public Operator
@@ -123,7 +181,6 @@ class And : public Operator
 		And(Shell_Base* l, Shell_Base* r) : Operator(l, r) {};
 
 		void execute();
-		void print();
 };
 
 class Hash : public Operator
@@ -132,8 +189,7 @@ class Hash : public Operator
 		Hash() : Operator() {};
 		Hash(Shell_Base* l, Shell_Base* r) : Operator(l, r) {}; //right child will be ignored
 
-		void execute();  //exit after left child is executed.
-		void print();
+		void execute();  //exit after left child is executed
 
 };
 
@@ -144,9 +200,7 @@ class Semi : public Operator
 		Semi(Shell_Base* l, Shell_Base* r) : Operator(l, r) {};
 
 		void execute();
-		void print();
 };
-*/
 
 
 
