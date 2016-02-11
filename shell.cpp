@@ -23,7 +23,6 @@ class Shell_Base
 
     virtual void execute() = 0;
     virtual int get_executed() = 0;
-    virtual void set_executed(int value) = 0;
 };
 
 class Command : public Shell_Base
@@ -124,8 +123,6 @@ class Operator : public Shell_Base
             return executed;
         }
 
-        virtual void set_executed(int value) = 0;
-
         virtual void execute() = 0;
         virtual void set_left(Shell_Base * left) = 0;
         virtual void set_right(Shell_Base * right) = 0;
@@ -167,20 +164,43 @@ class Or : public Operator
         {
             r = right;
         };
-
-        void set_executed(int value)
-        {
-            executed = value;
-        };
 };
 
 class And : public Operator
 {
 	public:
 		And() : Operator() {};
-		And(Shell_Base* l, Shell_Base* r) : Operator(l, r) {};
+		And(Shell_Base* l, Shell_Base* r)
+        {
+            this->l = l;
+            this->r = r;
 
-		void execute();
+            if (l->get_executed() != 0)
+                executed = 1;
+            else if (l->get_executed() == 0)
+                executed = 0;
+        };
+
+        void set_left(Shell_Base * left)
+        {
+            l = left;
+        };
+
+        void set_right(Shell_Base * right)
+        {
+            r = right;
+        };
+
+		void execute()
+        {
+            if (executed == 0)
+            {
+                r->execute();
+
+                if (r->get_executed() != 0)
+                    executed = 1;
+            }
+        };
 };
 
 class Hash : public Operator
