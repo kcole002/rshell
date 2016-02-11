@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <vector>
+#include <errno.h>
 
 using namespace std;
 
@@ -13,19 +14,20 @@ class Shell_Base
 {
 	public:
     virtual void execute() = 0;
-   // virtual void print() = 0;
 };
 
 class Command : public Shell_Base
 {
     private:
         vector<string> com;
+        int executed;
 
     public:
         Command() : Shell_Base() {};
         Command(vector<string> com) : Shell_Base()
         {
             this->com = com;
+            executed = 0;
         };
 
     	void execute()
@@ -33,9 +35,6 @@ class Command : public Shell_Base
             if (com.size() != 0)
             {    
                 char * args[com.size() + 1];
-
-           // args[0] = (char*)com.c_str();
-           // args[1] = NULL;
 
                 for (unsigned i = 0; i < com.size(); i++)
                 {
@@ -46,31 +45,42 @@ class Command : public Shell_Base
 
                 pid_t pid = fork();
 
+                if(pid < 0)
+                    perror("forking error");
+
                 if(pid == 0)
                 {   
                     // child
                     cout << "child: " << pid << endl;
-                    if (execvp(args[0], args) == -1)
-                    {
+                    int s = execvp(args[0], args);
+                    
+                    if (s == -1)
                         perror("exec");
-                    }
 
+
+                    exit(errno);
+                                   
                 }
 
                 if (pid > 0)
                 {
                     // parent
-                    if (wait(0) == -1)
-                    {
-                        perror("Wait");
-                    }
+                    int status;
+                    wait(&status);
+                    
+                    //cout << "status: " << status << endl;
+                    executed = status;
+
                     cout << "parent: " << pid << endl;
                 }
-            }   
+            }
+
+            else
+            {
+                cout << "Error: Passed in an empty array." << endl; 
+            }
+            cout << "executed value: " << executed << endl;
         };
-
-
-       // void print();
 
 };
 
@@ -89,8 +99,8 @@ class Operator : public Shell_Base
             this->r = r;
         };
 
-        virtual void execute();
-        virtual void print();
+        virtual void execute() = 0;
+        virtual void print() = 0;
 };
 
 class Or : public Operator
