@@ -244,11 +244,11 @@ bool create_tree(vector<vector<string> > v)
 
 void rshell()
 {
-	bool test = true;	
-  	 do
-   	 {
-		 test = create_tree(make_com());
-   	 } while (test);
+    bool test = true;	
+  	do
+   	{ 
+        test = create_tree(make_com());
+   	} while (test);
 }
 
 
@@ -273,7 +273,7 @@ int main()
     // Test case for Command Leaf class
     // DELETE OUTPUT FOR EXECUTE IN Command::execute()
     // DELETE OUTPUT STATEMENTS OF ELSE BRANCH OF execute() IN EVERY CLASS
-   /* 
+    /* 
     string a = "s";
     string b = "-a";
     
@@ -309,7 +309,7 @@ int main()
 
     cout << "executing child C:" << endl;
     C->execute(); cout << endl;
-*/
+    */
     // Test case for Or composite class (uses A, B, and C from Leaf class)
     /*
     Shell_Base * D = new Or(A,B);
@@ -352,7 +352,7 @@ int main()
 
 	//print_parse(rshell());
 	
-   rshell();
+    rshell();
 
 
     return 0;
