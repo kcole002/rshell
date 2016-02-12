@@ -101,7 +101,7 @@ vector<vector<string> > parse(string com)
 
 }
 
-vector<vector<string> >  rshell()
+vector<vector<string> >  make_com()
 {
 	string cmd;
 
@@ -111,6 +111,81 @@ vector<vector<string> >  rshell()
 	
 	return parse(cmd);
 
+
+}
+
+bool create_tree(vector<vector<string> > v)
+{
+	Shell_Base* left = 0;
+
+
+	if((v.at(0)).at(0) == "exit")
+	{
+		return true;
+	}
+
+	for(unsigned i = 0; i < v.size(); ++i)
+	{
+		if(((v.at(i)).at(0) == "&&") || ((v.at(i)).at(0) == "||") || ((v.at(i)).at(0) == ";"))
+		{
+			if(i == 0)
+			{
+				cout << "Error: invalid command.\n";
+				return false;
+			}
+
+			if( ((i + 1) < v.size()) &&  ((v.at(i)).at(0) == "&&"))
+			{
+				Shell_Base* temp = new Command(v.at(i));	
+				
+				Shell_Base * a = new And(left, temp);
+				a->execute();
+				if( a->get_executed() == -1)
+				{
+					return false;
+				}
+			}
+			else if( ((i + 1) < v.size()) && ((v.at(i)).at(0) == "||"))   
+			{
+				Shell_Base* temp  =  new Command(v.at(i + 1));
+
+				Shell_Base* a = new Or(left, temp);				
+				a->execute();
+				if( a->get_executed() == -1)
+				{
+					return false;
+				}
+
+			}
+			else if( ((v.at(i)).at(0) == ";"))   
+			{
+				Shell_Base* temp = new Command(v.at(i + 1));
+				Shell_Base* a = new Semi(left, temp);				
+				a->execute();
+				if( a->get_executed() == -1)
+				{
+					return false;
+				}	
+			}		
+
+		
+		}
+		else if((v.at(i)).at(0) == "#")
+		{
+			return true;
+		}
+		else
+		{
+
+			Shell_Base* a = new Command(v.at(i));
+			a->execute();
+			left = a;
+		
+		}
+
+
+	}
+	return true;	
 
 }
 
@@ -214,7 +289,14 @@ int main()
 
 
 	//print_parse(rshell());
-  
+
+/*
+    while(create_tree(make_com()))
+    {
+	make_com();
+    }
+		    
+  */
     return 0;
 }
 
