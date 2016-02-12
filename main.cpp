@@ -55,7 +55,7 @@ vector<vector<string> > parse(string com)
 		}
 		else       //exit if || isn't fully implemented
 		{
-			cout << "Invalid Command Line2." << endl;
+			cout << "Invalid Command Line." << endl;
 			exit(1);
 		}
 	}
@@ -68,7 +68,7 @@ vector<vector<string> > parse(string com)
 		}
 		else       //exit if && isn't fully implemented
 		{
-			cout << "Invalid Command Line1." << endl;
+			cout << "Invalid Command Line." << endl;
 			exit(1);
 		}
 	}
@@ -78,6 +78,8 @@ vector<vector<string> > parse(string com)
 	}
 	else if(v2.at(i) == "#")
 	{
+		v3.push_back(v2.at(i));
+		v.push_back(v3);
 		return v;
 	}
 	else            //create a command vector without connectors or hashes
@@ -117,9 +119,14 @@ vector<vector<string> >  make_com()
 bool create_tree(vector<vector<string> > v)
 {
 	Shell_Base* left = 0;
+	string exit = "exit";
 
 
 	if((v.at(0)).at(0) == "exit")
+	{
+		return false;
+	}
+	if((v.at(0)).at(0) == "#")
 	{
 		return true;
 	}
@@ -136,36 +143,70 @@ bool create_tree(vector<vector<string> > v)
 
 			if( ((i + 1) < v.size()) &&  ((v.at(i)).at(0) == "&&"))
 			{
-				Shell_Base* temp = new Command(v.at(i));	
+				Shell_Base* temp = new Command(v.at(i + 1));	
 				
 				Shell_Base * a = new And(left, temp);
-				a->execute();
-				if( a->get_executed() == -1)
+				if(v.at(i + 1).at(0)  == exit)
 				{
 					return false;
 				}
+				else if( ((v.at(i + 1)).at(0) == "&&") || ((v.at(i + 1)).at(0) == "||") || ((v.at(i + 1)).at(0) == ";"))
+				{
+					cout << "Error: Consecutive connectors.\n";
+					return true;	
+				}
+				else if((v.at(i + 1)).at(0) == "#")
+				{
+					return true;
+				}	
+				
+
+				a->execute();
 			}
 			else if( ((i + 1) < v.size()) && ((v.at(i)).at(0) == "||"))   
 			{
 				Shell_Base* temp  =  new Command(v.at(i + 1));
 
-				Shell_Base* a = new Or(left, temp);				
-				a->execute();
-				if( a->get_executed() == -1)
+				Shell_Base* a = new Or(left, temp);
+				if(v.at(i + 1).at(0)  == exit)
 				{
 					return false;
 				}
+				else if( ((v.at(i + 1)).at(0) == "&&") || ((v.at(i + 1)).at(0) == "||") || ((v.at(i + 1)).at(0) == ";"))
+				{
+					cout << "Error: Consecutive connectors.\n";
+					return true;	
+				}
+				else if((v.at(i + 1)).at(0) == "#")
+				{
+					return true;
+				}	
+
+				a->execute();
 
 			}
 			else if( ((v.at(i)).at(0) == ";"))   
 			{
 				Shell_Base* temp = new Command(v.at(i + 1));
-				Shell_Base* a = new Semi(left, temp);				
-				a->execute();
-				if( a->get_executed() == -1)
+				Shell_Base* a = new Semi(left, temp);
+				
+				if(v.at(i + 1).at(0)  == exit)
 				{
 					return false;
-				}	
+				
+				}
+				else if( ((v.at(i + 1)).at(0) == "&&") || ((v.at(i + 1)).at(0) == "||") || ((v.at(i + 1)).at(0) == ";"))
+				{
+					cout << "Error: Consecutive connectors.\n";
+					return true;	
+				}
+				else if((v.at(i + 1)).at(0) == "#")
+				{
+					return true;
+				}
+				
+				a->execute();
+				
 			}		
 
 		
@@ -178,8 +219,20 @@ bool create_tree(vector<vector<string> > v)
 		{
 
 			Shell_Base* a = new Command(v.at(i));
-			a->execute();
+			if (i == 0 && v.at(i).at(0) != exit)
+				{a->execute();}
+
+			else if (i == 0 && v.at(i).at(0) == exit)
+			{
+				return false;
+			}
+
 			left = a;
+			
+			if (a->get_executed() == -1)
+			{
+				return false;
+			}
 		
 		}
 
@@ -187,6 +240,15 @@ bool create_tree(vector<vector<string> > v)
 	}
 	return true;	
 
+}
+
+void rshell()
+{
+	bool test = true;	
+  	 do
+   	 {
+		 test = create_tree(make_com());
+   	 } while (test);
 }
 
 
@@ -211,7 +273,7 @@ int main()
     // Test case for Command Leaf class
     // DELETE OUTPUT FOR EXECUTE IN Command::execute()
     // DELETE OUTPUT STATEMENTS OF ELSE BRANCH OF execute() IN EVERY CLASS
-    
+   /* 
     string a = "s";
     string b = "-a";
     
@@ -247,7 +309,7 @@ int main()
 
     cout << "executing child C:" << endl;
     C->execute(); cout << endl;
-
+*/
     // Test case for Or composite class (uses A, B, and C from Leaf class)
     /*
     Shell_Base * D = new Or(A,B);
@@ -289,14 +351,10 @@ int main()
 
 
 	//print_parse(rshell());
+	
+   rshell();
 
-/*
-    while(create_tree(make_com()))
-    {
-	make_com();
-    }
-		    
-  */
+
     return 0;
 }
 

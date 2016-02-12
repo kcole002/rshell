@@ -52,7 +52,9 @@ class Command : public Shell_Base
 
                 args[com.size()] = NULL;
 
-                if (args[0] == "exit")
+		string check = "exit";
+
+                if (args[0] == check.c_str())
                 {
                    executed = -1;
                 }
@@ -95,7 +97,7 @@ class Command : public Shell_Base
             {
                 cout << "Error: Passed in an empty array." << endl; 
             }
-            cout << "executed value: " << executed << endl;
+          //  cout << "executed value: " << executed << endl;
         };
 
         int get_executed()
@@ -155,7 +157,7 @@ class Or : public Operator
 
             else 
             {
-                cout << "Error: no left child." << endl;
+              //  cout << "Error: no left child." << endl;
             }
         };
 
@@ -174,7 +176,7 @@ class Or : public Operator
 
             else
             {
-                cout << "Error: no right child." << endl;
+              //  cout << "Error: no right child." << endl;
             }
         };
 
@@ -208,7 +210,7 @@ class And : public Operator
 
             else 
             {
-                cout << "Error: no left child." << endl;
+              //  cout << "Error: no left child." << endl;
             }
         };
 
@@ -237,7 +239,7 @@ class And : public Operator
 
             else 
             {
-                cout << "Error: no right child." << endl;
+               // cout << "Error: no right child." << endl;
             }
         };
 };
@@ -288,7 +290,7 @@ class Semi : public Operator
             
             else 
             {
-                cout << "Error: no right child." << endl;
+               // cout << "Error: no right child." << endl;
             }
         };
 };
