@@ -227,7 +227,7 @@ int main()
 	//print_parse(rshell());
 
     // Test case for all composite classes together
-    /*
+    
     Shell_Base * J = new Or(A, B);
     Shell_Base * K = new And(J, C);
     Shell_Base * L = new Semi(K, N);
@@ -240,7 +240,7 @@ int main()
 
     cout << "executing A || B && C; N:" << endl;
     L->execute(); cout << endl;
-    */
+    
 
     return 0;
 }

@@ -52,35 +52,42 @@ class Command : public Shell_Base
 
                 args[com.size()] = NULL;
 
-                pid_t pid = fork();
-
-                if(pid < 0)
-                {perror("forking error");}
-
-                if(pid == 0)
-                {   
-                    // child
-                    //cout << "child: " << pid << endl;
-                    int s = execvp(args[0], args);
-                    
-                    if (s == -1)
-                        perror("exec");
-
-
-                    exit(errno);
-                                   
-                }
-
-                if (pid > 0)
+                if (args[0] == "exit")
                 {
-                    // parent
-                    int status;
-                    wait(&status);
-                    
-                    //cout << "status: " << status << endl;
-                    executed = status;
+                   executed = -1;
+                }
+                
+                else
+                {
+                    pid_t pid = fork();
 
-                    //cout << "parent: " << pid << endl;
+                    if(pid < 0)
+                    {perror("forking error");}
+
+                    if(pid == 0)
+                    {   
+                        // child
+                        //cout << "child: " << pid << endl;
+                        int s = execvp(args[0], args);
+                    
+                        if (s == -1)
+                            {perror("exec");}
+
+                        exit(errno);
+                                   
+                    }
+
+                    if (pid > 0)
+                    {
+                        // parent
+                        int status;
+                        wait(&status);
+                    
+                        //cout << "status: " << status << endl;
+                        executed = status;
+
+                        //cout << "parent: " << pid << endl;
+                    }
                 }
             }
 
@@ -137,11 +144,19 @@ class Or : public Operator
             this->l = l;
             this->r = r;
 
-            if (l->get_executed() != 0)
-                executed = 0;
+            if (l != 0)
+            {
+                if (l->get_executed() > 0)
+                    executed = 0;
 
-            else if (l->get_executed() == 0)
-                executed = 1;
+                else if (l->get_executed() == 0)
+                    executed = 1;
+            }
+
+            else 
+            {
+                cout << "Error: no left child." << endl;
+            }
         };
 
         void execute()
@@ -183,10 +198,18 @@ class And : public Operator
             this->l = l;
             this->r = r;
 
-            if (l->get_executed() != 0)
-                executed = 1;
-            else if (l->get_executed() == 0)
-                executed = 0;
+            if (l != 0)
+            {
+                if (l->get_executed() > 0)
+                    executed = 1;
+                else if (l->get_executed() == 0)
+                    executed = 0;
+            }
+
+            else 
+            {
+                cout << "Error: no left child." << endl;
+            }
         };
 
         void set_left(Shell_Base * left)
