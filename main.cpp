@@ -137,7 +137,7 @@ int main()
     // DELETE OUTPUT FOR EXECUTE IN Command::execute()
     // DELETE OUTPUT STATEMENTS OF ELSE BRANCH OF execute() IN EVERY CLASS
     
-    string a = "s";
+    string a = "ls";
     string b = "-a";
     
     vector<string> v1;
@@ -162,7 +162,7 @@ int main()
     cout << "executing child B:" << endl;
     B->execute(); cout << endl;    
     
-    string e = "s";
+    string e = "echo";
     string f = "I love Brian Crites.";
     vector<string> v3;
     v3.push_back(e);
@@ -173,6 +173,17 @@ int main()
     cout << "executing child C:" << endl;
     C->execute(); cout << endl;
 
+    string g = "echo";
+    string h = "KSAOHUB";
+
+    vector<string> v4;
+    v4.push_back(g);
+    v4.push_back(h);
+
+    Shell_Base * N = new Command(v4);
+    cout << "executing child N:" << endl;
+    N->execute(); cout << endl;
+
     // Test case for Or composite class (uses A, B, and C from Leaf class)
     /*
     Shell_Base * D = new Or(A,B);
@@ -182,7 +193,7 @@ int main()
 
     Shell_Base * E = new Or(D, C);
 
-    cout << "executing (A || B) || C:" << endl;
+    cout << "executing A || B || C:" << endl;
     E->execute(); cout << endl;
     */
 
@@ -195,7 +206,7 @@ int main()
 
     Shell_Base * G = new And(F, C);
 
-    cout << "executing (A && B) && C:" << endl;
+    cout << "executing A && B && C:" << endl;
     G->execute(); cout << endl;
     */
 
@@ -208,13 +219,29 @@ int main()
 
     Shell_Base * I = new Semi(H, C);
 
-    cout << "executing (A;B);C:" << endl;
+    cout << "executing A;B;C:" << endl;
     I->execute(); cout << endl;
     */
 
 
 	//print_parse(rshell());
-  
+
+    // Test case for all composite classes together
+    /*
+    Shell_Base * J = new Or(A, B);
+    Shell_Base * K = new And(J, C);
+    Shell_Base * L = new Semi(K, N);
+
+    cout << "executing A || B:" << endl;
+    J->execute(); cout << endl;
+
+    cout << "executing A || B && C:" << endl;
+    K->execute(); cout << endl;
+
+    cout << "executing A || B && C; N:" << endl;
+    L->execute(); cout << endl;
+    */
+
     return 0;
 }
 

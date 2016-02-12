@@ -219,6 +219,7 @@ class And : public Operator
         };
 };
 
+/*
 class Hash : public Operator
 {
 	public:
@@ -228,6 +229,7 @@ class Hash : public Operator
 		void execute();  //exit after left child is executed
 
 };
+*/
 
 class Semi : public Operator
 {
