@@ -4,8 +4,6 @@
 cd ../src/
 make all
 
-cd bin/
-
 echo
 echo
 echo "****** FOR TESTING, ALL TEST CASES INCLUDE exit AS THE NEXT COMMAND LINE ******"
