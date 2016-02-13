@@ -10,8 +10,7 @@ MAIN = main.cpp
 all: $(OBJECTS)
 	$(COMPILE) $(FLAGS) $(OBJECTS) $(MAIN) -o $(PROGRAM)
 
-rshell: shell.cpp
-	$(COMPILE) $(FLAGS) -c shell.cpp -o $(OBJECTS)
+rshell: all
 
 clean:
 	rm -f $(OBJECTS) $(PROGRAM)
