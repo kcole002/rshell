@@ -1,6 +1,6 @@
 COMPILE = g++
 FLAGS = -Wall -Werror -ansi -pedantic 
-PROGRAM = a.out
+PROGRAM = rshell.out
 OBJECTS = shell.o
 MAIN = main.cpp
 
