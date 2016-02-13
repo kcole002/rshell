@@ -1,11 +1,6 @@
 #!/bin/sh
 
-##Compile_src=$1
-#echo="echo hello world"
-#cd_assn="cd assn"
-#ls_a="ls -a"
-#wrong_echo="eco hi"
-#exit_cmd="exit"
+
 
 cd ../src/
 make all
