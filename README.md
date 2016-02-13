@@ -7,7 +7,7 @@ Our main.cpp file contains the following functions:
 - void create_tree- creates the inheritance tree that we use to determine which command should be executed
 - void rshell- runs the whole program in a while loop until exit is executed
 
-our shell.cpp file contains the following classes:
+Our shell.cpp file contains the following classes:
 - Shell_Base- the base abstact base class containing a variable called executed
 - Command- executes a single command from a vector<string>
 - Operator- parent base class for our composite classes containd left and right Shell_Base*
