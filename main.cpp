@@ -103,17 +103,42 @@ vector<vector<string> > parse(string com)
 
 }
 
+const int ARRAY_MAX = 20;
+
 vector<vector<string> >  make_com()
 {
 	string cmd;
 
+    char hostname[ARRAY_MAX];
+    char login[ARRAY_MAX];
+
+    int result = getlogin_r(login, ARRAY_MAX);
+    if (result)
+    {
+        perror("getlogin");
+    }
+
+    else 
+    {
+        cout << login;
+    }
+ 
+    result = gethostname(hostname, ARRAY_MAX);
+    if (result)
+    {
+        perror("gethostname");
+    }
+    
+    else
+    {
+        cout << '@' << hostname;
+    }
+
 	cout << "$ ";
 	getline(cin, cmd);
-	cout << endl;
+	//cout << endl;
 	
 	return parse(cmd);
-
-
 }
 
 bool create_tree(vector<vector<string> > v)
