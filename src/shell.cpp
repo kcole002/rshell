@@ -295,10 +295,28 @@ class Semi : public Operator
         };
 };
 
+class Test : public Shell_Base
+{
+    private:
+        vector<string> test_str;
 
+    public:
+        Test() : Shell_Base() {}
+        Test(vector<string> s) : Shell_Base()
+        {
+            this->test_str = s;
+        }
 
+        int get_executed()
+        {
+           return executed;
+        } 
 
+        void execute()
+        {
 
+        }
+};
 
 
 
