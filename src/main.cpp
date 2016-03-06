@@ -427,6 +427,8 @@ int main()
 
     //Running the whole file
     //rshell();
+	vector<vector<string> > temp = make_com();
+	print_parse(temp);
 
 
     return 0;
