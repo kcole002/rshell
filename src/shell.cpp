@@ -327,7 +327,7 @@ class Test : public Shell_Base
                 {
                     if (v.size() < 2)
                     {
-                        cout << "Error--filepath is not specified for test" << endl;
+                        cout << "Error--filepath is not specified for test -f" << endl;
                     }
 
                     else
@@ -339,31 +339,71 @@ class Test : public Shell_Base
                         {   
                             executed = 1;
                             perror("stat");
-                            cout << "\"" << pathname << "\"" << " is not a file/directory." << endl;
+                            //cout << "\"" << pathname << "\"" << " is not a file/directory." << endl;
                         }
 
                         else 
                         {
                             executed = 0;
-                            cout << "\"" << pathname << "\"" << " is a file/directory." << endl;
+                            //cout << "\"" << pathname << "\"" << " is a file/directory." << endl;
                         }
 
                         if (S_ISREG(sb.st_mode))
                         {
                             executed = 0;
-                            cout << "\"" << pathname << "\"" << " is a regular file." << endl;
+                            //cout << "\"" << pathname << "\"" << " is a regular file." << endl;
                         }
 
                         else 
                         {
                             executed = 1;
-                            cout << "\"" << pathname << "\"" << " is not a regular file." << endl;
+                            //cout << "\"" << pathname << "\"" << " is not a regular file." << endl;
                         }
                         
-                    
                     }
                 
                 }
+
+                if (v.at(0) == "-d") // -d
+                {
+                    if (v.size() < 2)
+                    {
+                        cout << "Error--filepath is not specified for test -d." << endl;
+                    }
+
+                    else 
+                    {
+                        const string pathname = v.at(1);
+                        struct stat sb;
+
+                        if (stat(pathname.c_str(), &sb) == -1)
+                        {
+                            executed = 1;
+                            cout << pathname << " is not a file/directory." << endl;
+                        }
+
+                        else 
+                        {
+                            executed = 0;
+                            cout << pathname << " is a file/directory." << endl;
+                        }
+
+                        if (S_ISDIR(sb.st_mode) )
+                        {
+                            executed = 0;
+                            cout << pathname << " is a directory." << endl;
+                        }
+
+                        else 
+                        {
+                            executed = 1;
+                            cout << pathname << " is not a directory." << endl;
+                        }
+
+                    }
+                }
+
+
             }
         }
 };

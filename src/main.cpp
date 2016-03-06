@@ -378,7 +378,7 @@ int main()
 	//print_parse(rshell());
 	
     
-    // Test case for Test leaf class (uses a vector of strings with -f as its first element)
+    // Test case for Test -f leaf class (uses a vector of strings with -f as its first element)
     /*
     vector<string> z;
     string filepath = "/home/csmajs/cdele005/CS100/Lab6/composite.h";
@@ -391,6 +391,20 @@ int main()
 
     J->execute();
     */
+
+    // Test case for Test -d leaf class
+    /*
+    vector<string> y;
+    string filepath2 = "/home/csmajs/cdele005/CS100/Lab6";
+
+    y.push_back("-d");
+    y.push_back(filepath2);
+
+    Shell_Base * K = new Test(y);
+
+    K->execute();
+    */
+
 
 
     //Running the whole file
