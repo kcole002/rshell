@@ -437,12 +437,62 @@ int main()
     K->execute();
     */
 
+    // Test case for Test -e (and default) leaf class
+    /*
+    vector<string> x;
+    string filepath3 = "/home/csmajs/cdele005/CS100/Lab6";
 
+    x.push_back("-e");
+    x.push_back(filepath3);
+
+    Shell_Base * L = new Test(x);
+
+    L->execute();
+    */
+
+    // Test case for Test (with flags)
+    /*
+    vector <string> w;
+    vector <string> u;
+    vector <string> t;
+    string flag1 = "-e"; // -e
+    string flag2 = "-f"; // -f
+    string flag3 = "-d"; // -d
+
+    // Place path of file to test here
+    string filepath4 = "/home/csmajs/cdele005/CS100/Lab6";
+
+    w.push_back(flag1);
+    w.push_back(filepath4);
+
+    u.push_back(flag2);
+    u.push_back(filepath4);
+
+    t.push_back(flag3);
+    t.push_back(filepath4);
+
+    cout << "Running Test on " << "\"" << filepath4 << "\"" << "..." << endl;
+
+    Shell_Base * M = new Test(w);
+    cout << "File or directory? ";
+    M->execute();
+
+    Shell_Base * N = new Test(u);
+    cout << "Regular File? ";
+    N->execute();
+
+    Shell_Base * O =  new Test(t);
+    cout << "Directory? ";
+    O->execute();
+    */
 
     //Running the whole file
     //rshell();
+
+    /*
 	vector<vector<string> > temp = make_com();
 	print_parse(temp);
+    */
 
 
     return 0;

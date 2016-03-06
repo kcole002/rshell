@@ -338,33 +338,30 @@ class Test : public Shell_Base
                         if (stat(pathname.c_str(), &sb) == -1)
                         {   
                             executed = 1;
-                            perror("stat");
-                            //cout << "\"" << pathname << "\"" << " is not a file/directory." << endl;
                         }
 
                         else 
                         {
                             executed = 0;
-                            //cout << "\"" << pathname << "\"" << " is a file/directory." << endl;
                         }
 
                         if (S_ISREG(sb.st_mode))
                         {
                             executed = 0;
-                            //cout << "\"" << pathname << "\"" << " is a regular file." << endl;
+                            cout << "(TRUE)" << endl;
                         }
 
                         else 
                         {
                             executed = 1;
-                            //cout << "\"" << pathname << "\"" << " is not a regular file." << endl;
+                            cout << "(FALSE)" << endl;
                         }
                         
                     }
                 
                 }
 
-                if (v.at(0) == "-d") // -d
+                else if (v.at(0) == "-d") // -d
                 {
                     if (v.size() < 2)
                     {
@@ -379,31 +376,76 @@ class Test : public Shell_Base
                         if (stat(pathname.c_str(), &sb) == -1)
                         {
                             executed = 1;
-                            cout << pathname << " is not a file/directory." << endl;
                         }
 
                         else 
                         {
                             executed = 0;
-                            cout << pathname << " is a file/directory." << endl;
                         }
 
                         if (S_ISDIR(sb.st_mode) )
                         {
                             executed = 0;
-                            cout << pathname << " is a directory." << endl;
+                            cout << "(TRUE)" << endl;
                         }
 
                         else 
                         {
                             executed = 1;
-                            cout << pathname << " is not a directory." << endl;
+                            cout << "(FALSE)" << endl;
                         }
 
                     }
                 }
 
+                else 
+                {
+                    struct stat sb;
+                    string pathname = "";
 
+                    if (v.at(0) == "-e")
+                    {
+                        if (v.size() < 2)
+                        {
+                            executed = 1;
+                            cout << "Error--there is no filepath specified for test -f" << endl;
+                        }
+
+                        else 
+                        {   
+                            pathname = v.at(1);
+                        }
+                    }
+
+                    else 
+                    {
+                        if (v.size() < 1)
+                        {
+                            executed = 1;
+                            cout << "Error--there is no filepath specified for test command." << endl;
+                        }
+
+                        else
+                        {
+                            pathname = v.at(0);
+                        }
+                    }
+
+                    if (pathname != "")
+                    {
+                        if (stat(pathname.c_str(), &sb) == -1)
+                        {
+                            executed = 1;
+                            cout << "(FALSE)" << endl;
+                        }
+
+                        else 
+                        {
+                            executed = 0;
+                            cout << "(TRUE)" << endl;
+                        }
+                    }
+                }
             }
         }
 };
