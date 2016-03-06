@@ -377,7 +377,24 @@ int main()
 
 	//print_parse(rshell());
 	
-    rshell();
+    
+    // Test case for Test leaf class (uses a vector of strings with -f as its first element)
+    /*
+    vector<string> z;
+    string filepath = "/home/csmajs/cdele005/CS100/Lab6/composite.h";
+    z.push_back("-f");
+    z.push_back(filepath);
+
+    //cout << z.at(0) << ' ' << z.at(1) << endl;
+
+    Shell_Base * J = new Test(z);
+
+    J->execute();
+    */
+
+
+    //Running the whole file
+    //rshell();
 
 
     return 0;

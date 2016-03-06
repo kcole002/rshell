@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <vector>
 #include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -52,7 +54,7 @@ class Command : public Shell_Base
 
                 args[com.size()] = NULL;
 
-		string check = "exit";
+		        string check = "exit";
 
                 if (args[0] == check.c_str())
                 {
@@ -298,13 +300,13 @@ class Semi : public Operator
 class Test : public Shell_Base
 {
     private:
-        vector<string> test_str;
+        vector<string> v;
 
     public:
         Test() : Shell_Base() {}
         Test(vector<string> s) : Shell_Base()
         {
-            this->test_str = s;
+            this->v = s;
         }
 
         int get_executed()
@@ -314,9 +316,68 @@ class Test : public Shell_Base
 
         void execute()
         {
+            if (v.empty())
+            {
+                cout << "Error--the vector used in pushing is empty" << endl;
+            }
 
+            else
+            {
+                if (v.at(0) == "-f") // -f 
+                {
+                    if (v.size() < 2)
+                    {
+                        cout << "Error--filepath is not specified for test" << endl;
+                    }
+
+                    else
+                    {
+                        const string pathname = v.at(1);
+                        struct stat sb;
+
+                        if (stat(pathname.c_str(), &sb) == -1)
+                        {   
+                            executed = 1;
+                            perror("stat");
+                            cout << "\"" << pathname << "\"" << " is not a file/directory." << endl;
+                        }
+
+                        else 
+                        {
+                            executed = 0;
+                            cout << "\"" << pathname << "\"" << " is a file/directory." << endl;
+                        }
+
+                        if (S_ISREG(sb.st_mode))
+                        {
+                            executed = 0;
+                            cout << "\"" << pathname << "\"" << " is a regular file." << endl;
+                        }
+
+                        else 
+                        {
+                            executed = 1;
+                            cout << "\"" << pathname << "\"" << " is not a regular file." << endl;
+                        }
+                        
+                    
+                    }
+                
+                }
+            }
         }
 };
+
+
+
+
+
+
+
+
+
+
+
 
 
 
