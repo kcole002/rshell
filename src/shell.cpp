@@ -318,7 +318,7 @@ class Test : public Shell_Base
         {
             if (v.empty())
             {
-                cout << "Error--the vector used in pushing is empty" << endl;
+                cout << "(FALSE)" << endl;
             }
 
             else

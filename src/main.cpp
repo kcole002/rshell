@@ -164,11 +164,12 @@ vector<vector<string> >  make_com()
 	getline(cin, cmd);
 	//cout << endl;
 	
-	if(check_par(cmd) == false)
+    /*
+	if(check_par(cmd) == false))
 	{
 		exit(1);
 	}
-
+*/
 	
 	return parse(cmd);
 }
@@ -200,8 +201,22 @@ bool create_tree(vector<vector<string> > v)
 
 			if( ((i + 1) < v.size()) &&  ((v.at(i)).at(0) == "&&"))
 			{
-				Shell_Base* temp = new Command(v.at(i + 1));	
-				
+				Shell_Base* temp;	
+				if (!v.at(i + 1).empty() && v.at(i + 1).at(0) == "test")
+                {
+                    vector<string> test_v;
+                    for (unsigned j = 1; j < v.at(i + 1).size(); j++)
+                    {
+                        test_v.push_back(v.at(i + 1).at(j));
+                    }
+                    temp = new Test(test_v);
+                }
+
+                else 
+                {
+                    temp = new Command(v.at(i + 1));
+                }
+
 				Shell_Base * a = new And(left, temp);
 				if(v.at(i + 1).at(0)  == exit)
 				{
@@ -222,8 +237,23 @@ bool create_tree(vector<vector<string> > v)
 			}
 			else if( ((i + 1) < v.size()) && ((v.at(i)).at(0) == "||"))   
 			{
-				Shell_Base* temp  =  new Command(v.at(i + 1));
+                Shell_Base* temp;	
+				if (!v.at(i + 1).empty() && v.at(i + 1).at(0) == "test")
+                { 
+                    vector<string> test_v;
+                    for (unsigned j = 1; j < v.at(i + 1).size(); j++)
+                    {
+                        test_v.push_back(v.at(i + 1).at(j));
+                    }
+                    temp = new Test(test_v);
 
+                }
+
+                else 
+                {
+                    temp = new Command(v.at(i + 1));
+                }
+                  
 				Shell_Base* a = new Or(left, temp);
 				if(v.at(i + 1).at(0)  == exit)
 				{
@@ -244,7 +274,24 @@ bool create_tree(vector<vector<string> > v)
 			}
 			else if( ((v.at(i)).at(0) == ";"))   
 			{
-				Shell_Base* temp = new Command(v.at(i + 1));
+                Shell_Base * temp;
+                if (!v.at(i + 1).empty() && v.at(i + 1).at(0) == "test")
+                {
+                    vector<string> test_v;
+                    for (unsigned j = 1; j < v.at(i + 1).size(); j++)
+                    {
+                        test_v.push_back(v.at(i + 1).at(j));
+                    }
+                    temp = new Test(test_v);
+
+
+                }
+
+                else 
+                {
+                    temp = new Command(v.at(i + 1));
+                }
+
 				Shell_Base* a = new Semi(left, temp);
 				
 				if(v.at(i + 1).at(0)  == exit)
@@ -274,8 +321,28 @@ bool create_tree(vector<vector<string> > v)
 		}
 		else
 		{
+            Shell_Base * a;
+            if (v.at(i).at(0) == "test")
+            {
+                vector<string> test_v;
+                for (unsigned j = 1; j < v.at(i).size(); j++)
+                {
+                    test_v.push_back(v.at(i).at(j));
+                }
 
-			Shell_Base* a = new Command(v.at(i));
+                a = new Test(test_v);
+            }
+
+            else if (v.at(i).at(0) == "exit")
+            {
+                return false;
+            }
+
+            else 
+            {
+                a = new Command(v.at(i));
+            }
+
 			if (i == 0 && v.at(i).at(0) != exit)
 				{a->execute();}
 
@@ -487,7 +554,7 @@ int main()
     */
 
     //Running the whole file
-    //rshell();
+    rshell();
 
     /*
 	vector<vector<string> > temp = make_com();
