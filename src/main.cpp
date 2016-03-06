@@ -28,6 +28,32 @@ void print_parse(vector<vector<string> > vec)
 	return;
 }
 
+bool check_par(string cmd)
+{
+	unsigned size = cmd.size();
+	int open_par = 0;
+	int close_par = 0;
+
+	for(unsigned i = 0; i < size; ++i)
+	{
+		if(cmd.at(i) == '(')
+		{
+			++open_par;
+		}
+		else if(cmd.at(i) == ')')
+		{
+			++close_par;
+		}
+	}
+
+	if(open_par != close_par)
+	{
+		cout << "Error: Hanging parenthesis/n";
+		return false;
+	}
+	return true;
+}
+
 vector<vector<string> > parse(string com)
 {
 	vector<vector<string> > v;
@@ -137,6 +163,12 @@ vector<vector<string> >  make_com()
 	cout << "$ ";
 	getline(cin, cmd);
 	//cout << endl;
+	
+	if(check_par(cmd) == false)
+	{
+		exit(1);
+	}
+
 	
 	return parse(cmd);
 }
