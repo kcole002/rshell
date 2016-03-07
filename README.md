@@ -2,15 +2,15 @@ Functionality
 
 Our main.cpp file contains the following functions:
 
-bool par_found- checks to see if the command line contains parentheses
-bool check_par- makes sure that there are no hanging parentheses
-string replace_par- repalces the outer parenthese of a group with quotation marks (for parsing)
-bool parse_original- parses a command line that doesn't contain parentheses
-bool parse- parses a command line with parentheses
-bool make_com- this takes in the user input and calls parse and returns true if exit is not an executed command
-bool create_tree- creates the inheritance tree that we use to determine which command should be executed
-bool new_create_tree- handles precedence of command lines with parentheses
-void rshell- runs the whole program in a while loop until exit is executed
+-bool par_found- checks to see if the command line contains parentheses
+-bool check_par- makes sure that there are no hanging parentheses
+-string replace_par- repalces the outer parenthese of a group with quotation marks (for parsing)
+-bool parse_original- parses a command line that doesn't contain parentheses
+-bool parse- parses a command line with parentheses
+-bool make_com- this takes in the user input and calls parse and returns true if exit is not an executed command
+-bool create_tree- creates the inheritance tree that we use to determine which command should be executed
+-bool new_create_tree- handles precedence of command lines with parentheses
+-void rshell- runs the whole program in a while loop until exit is executed
 
 Our shell.cpp file contains the following classes:
 
