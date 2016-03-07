@@ -554,6 +554,7 @@ void rshell()
   	do
    	{ 
         test = make_com();
+	cout << endl;
    	} while (test);
 }
 
