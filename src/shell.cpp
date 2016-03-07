@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <vector>
 #include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -52,7 +54,7 @@ class Command : public Shell_Base
 
                 args[com.size()] = NULL;
 
-		string check = "exit";
+		        string check = "exit";
 
                 if (args[0] == check.c_str())
                 {
@@ -294,6 +296,165 @@ class Semi : public Operator
             }
         };
 };
+
+class Test : public Shell_Base
+{
+    private:
+        vector<string> v;
+
+    public:
+        Test() : Shell_Base() {}
+        Test(vector<string> s) : Shell_Base()
+        {
+            this->v = s;
+        }
+
+        int get_executed()
+        {
+           return executed;
+        } 
+
+        void execute()
+        {
+            if (v.empty())
+            {
+                cout << "(False)" << endl;
+            }
+
+            else
+            {
+                if (v.at(0) == "-f") // -f 
+                {
+                    if (v.size() < 2)
+                    {
+                        cout << "Error--filepath is not specified for test -f" << endl;
+                    }
+
+                    else
+                    {
+                        const string pathname = v.at(1);
+                        struct stat sb;
+
+                        if (stat(pathname.c_str(), &sb) == -1)
+                        {   
+                            executed = 0;
+                        }
+
+                        else 
+                        {
+                            executed = 1;
+                        }
+
+                        if (S_ISREG(sb.st_mode))
+                        {
+                            executed = 1;
+                            cout << "(True)" << endl;
+                        }
+
+                        else 
+                        {
+                            executed = 0;
+                            cout << "(False)" << endl;
+                        }
+                        
+                    }
+                
+                }
+
+                else if (v.at(0) == "-d") // -d
+                {
+                    if (v.size() < 2)
+                    {
+                        cout << "Error--filepath is not specified for test -d." << endl;
+                    }
+
+                    else 
+                    {
+                        const string pathname = v.at(1);
+                        struct stat sb;
+
+                        if (stat(pathname.c_str(), &sb) == -1)
+                        {
+                            executed = 0;
+                        }
+
+                        else 
+                        {
+                            executed = 1;
+                        }
+
+                        if (S_ISDIR(sb.st_mode) )
+                        {
+                            executed = 1;
+                            cout << "(True)" << endl;
+                        }
+
+                        else 
+                        {
+                            executed = 0;
+                            cout << "(False)" << endl;
+                        }
+
+                    }
+                }
+
+                else 
+                {
+                    struct stat sb;
+                    string pathname = "";
+
+                    if (v.at(0) == "-e")
+                    {
+                        if (v.size() < 2)
+                        {
+                            executed = 0;
+                            cout << "Error--there is no filepath specified for test -f" << endl;
+                        }
+
+                        else 
+                        {   
+                            pathname = v.at(1);
+                        }
+                    }
+
+                    else 
+                    {
+                        if (v.size() < 1)
+                        {
+                            executed = 0;
+                            cout << "Error--there is no filepath specified for test command." << endl;
+                        }
+
+                        else
+                        {
+                            pathname = v.at(0);
+                        }
+                    }
+
+                    if (pathname != "")
+                    {
+                        if (stat(pathname.c_str(), &sb) == -1)
+                        {
+                            executed = 0;
+                            cout << "(False)" << endl;
+                        }
+
+                        else 
+                        {
+                            executed = 1;
+                            cout << "(True)" << endl;
+                        }
+                    }
+                }
+            }
+        }
+};
+
+
+
+
+
+
 
 
 

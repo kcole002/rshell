@@ -6,6 +6,17 @@
 using namespace std;
 using namespace boost;
 
+bool par_found(string cmd)
+{
+	for(unsigned i = 0; i < cmd.size(); ++i)
+	{
+		if(cmd.at(i) == '(' || cmd.at(i) == ')')
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 void print_parse(vector<vector<string> > vec)
 {
@@ -30,11 +41,10 @@ void print_parse(vector<vector<string> > vec)
 
 bool check_par(string cmd)
 {
-	unsigned size = cmd.size();
 	int open_par = 0;
 	int close_par = 0;
 
-	for(unsigned i = 0; i < size; ++i)
+	for(unsigned i = 0; i < cmd.size(); ++i)
 	{
 		if(cmd.at(i) == '(')
 		{
@@ -48,19 +58,51 @@ bool check_par(string cmd)
 
 	if(open_par != close_par)
 	{
-		cout << "Error: Hanging parenthesis/n";
+		cout << "Error: Hanging parentheses/n";
 		return false;
 	}
 	return true;
 }
 
+string replace_par(string cmd)
+{
+	int open = 0;
+	int close = 0;
 
-vector<vector<string> > parse(string com)
+	for(unsigned i = 0; i < cmd.size(); ++i)
+	{
+		if(cmd.at(i) == '(')
+		{
+			++open;
+			if(open == 1)
+			{
+				cmd.at(i) = '"';
+			}
+
+		}
+		else if(cmd.at(i) == ')')
+		{
+			++close;
+			if(open == close)
+			{
+				cmd.at(i) = '"';
+				open = 0;
+				close = 0;
+			}
+		}
+	}
+	return cmd;	
+
+}
+
+bool create_tree(vector<vector<string> > v);
+
+bool parse_original(string com)
 {
 	vector<vector<string> > v;
 	vector<string> v2;
 
-    char_separator<char> delim(" ", "|&#);");
+    char_separator<char> delim(" ", "|&;#");
     tokenizer<char_separator<char> >mytok(com, delim);
 
     for(tokenizer<char_separator<char> >::iterator it = mytok.begin(); it != mytok.end(); ++it)
@@ -71,68 +113,287 @@ vector<vector<string> > parse(string com)
     for(unsigned i = 0; i < v2.size(); ++i)
     {
 
-	vector<string> v3;
+		vector<string> v3;
 
-	if(v2.at(i) == "|")      //check for || command
-	{
-		++i;
-		if(v2.at(i) == "|")
-		{
-			v3.push_back("||");
-		}
-		else       //exit if || isn't fully implemented
-		{
-			cout << "Invalid Command Line." << endl;
-			exit(1);
-		}
-	}
-	else if(v2.at(i) == "&")      //check for && command
-	{
-		++i;
-		if(v2.at(i) == "&")
-		{
-			v3.push_back("&&");
-		}
-		else       //exit if && isn't fully implemented
-		{
-			cout << "Invalid Command Line." << endl;
-			exit(1);
-		}
-	}
-	else if(v2.at(i) == ";")
-	{
-		v3.push_back(v2.at(i));
-	}
-	else if(v2.at(i) == "#")
-	{
-		v3.push_back(v2.at(i));
-		v.push_back(v3);
-		return v;
-	}
-	else            //create a command vector without connectors or hashes
-	{
- 
-		while((i < v2.size()) && (v2.at(i) != "&") && (v2.at(i) != "|") && (v2.at(i) != ";") && (v2.at(i) != "#"))
-		{
+	//	if(v2.at(i) == "||" || v2.at(i) == "&&" v2.at(i) == ';'
 
-			v3.push_back(v2.at(i));
+		if(v2.at(i) == "|")      //check for || command
+		{
 			++i;
+			if(v2.at(i) == "|")
+			{
+				v3.push_back("||");
+			}
+			else       //exit if || isn't fully implemented
+			{
+				cout << "Invalid Command Line.1" << endl;
+				exit(1);
+			}
 		}
-	
-		i = i - 1;
-	
+		else if(v2.at(i) == "&")      //check for && command
+		{
+			++i;
+			if(v2.at(i) == "&")
+			{
+				v3.push_back("&&");
+			}
+			else       //exit if && isn't fully implemented
+			{
+				cout << "Invalid Command Line.2" << endl;
+				exit(1);
+			}
+		}
+		else if(v2.at(i) == ";")
+		{
+			v3.push_back(v2.at(i));
+		}
+		else if(v2.at(i) == "#")
+		{
+			v3.push_back(v2.at(i));
+			v.push_back(v3);
+			return create_tree(v);
+		}
+		else            //create a command vector without connectors or hashes
+		{
+	 
+			while((i < v2.size()) && (v2.at(i) != "&") && (v2.at(i) != "|") && (v2.at(i) != ";") && (v2.at(i) != "#"))
+			{
+
+				v3.push_back(v2.at(i));
+				++i;
+			}
+		
+			i = i - 1;
+		
+		}
+			v.push_back(v3);
+		
 	}
-        v.push_back(v3);
-    }
+    
+    for (unsigned k = 0; k < v.size(); k++)
+    {
+        if (v.at(k).at(0) == "[")
+        {
+            vector<string> x;
+            x.push_back("test");
+            for (unsigned l = 1; l < v.at(k).size(); l++)
+            {
+                if (v.at(k).at(l) != "]")
+                {
+                    x.push_back(v.at(k).at(l));
+                }
+            }
 
-
-    return v;
+            v.at(k) = x;
+        }
+    }   
+	return create_tree(v);
 
 }
 
+bool new_create_tree(vector<string> v);
+
+bool parse(string com)
+{
+	vector<string> v;
+
+	escaped_list_separator<char> sep("", " ", "\"");
+	tokenizer<escaped_list_separator<char> >mytok(com, sep);
+
+	for(tokenizer<escaped_list_separator<char> >::iterator it = mytok.begin(); it != mytok.end(); ++it)
+	{
+		if(*it == "#")
+		{
+			return new_create_tree(v);
+		}
+		v.push_back(*it);			
+	}
+
+/*	cout << "Vector contains:\n";	
+	for(unsigned i = 0; i < v.size(); ++i)
+	{
+		cout << v.at(i) << endl;
+	}
+
+	cout << "---------------------\n";
+*/	
+	return new_create_tree(v);
+
+}
+
+bool new_create_tree(vector<string> v)
+{
+		//make sure first command is not && or ||
+	if(v.at(0) == "||" || v.at(0) == "&&")
+	{
+		cout << "Error: invalid command\n";
+		exit(1);
+	}
+
+
+	string temp_cmd = v.at(0);
+
+	for(unsigned i = 1; i < v.size(); ++i)
+	{
+		
+
+
+		if(v.at(i) == "||" || v.at(i) == "&&" || v.at(i) == ";")
+		{
+			string connector = v.at(i);
+			
+			//check if the string of commands has parentheses
+			if(par_found(temp_cmd))
+			{
+				temp_cmd = replace_par(temp_cmd);
+			//	cout << temp_cmd << endl;
+
+				//if it does we will break it down again using parse
+				parse(temp_cmd);
+			}
+			else
+			{
+				//bool keeps track of whether or not the command line (temp_cmd) was successful as executing or not
+				bool check_succeed = parse_original(temp_cmd);
+				if(check_succeed == false)
+				{
+					if(connector == "||")
+					{
+						if(i >= v.size())
+						{
+							//cout << "FLAG 1\n";
+							cout << "Error: invalid connector location\n";
+							return false;
+						}
+						vector<string> v_temp;
+						for(unsigned j = i + 1; j < v.size(); ++j)
+						{
+							v_temp.push_back(v.at(j));
+							
+						}
+						
+						return new_create_tree(v_temp);
+					}
+					else if(connector == "&&")
+					{
+						return false;
+					}
+					else if(connector == ";")
+					{
+						if(i >= v.size())
+						{
+							cout << "FLAG 2\n";
+							cout << "Error: invalid connector location\n";
+							return false;
+						}
+						vector<string> v_temp;
+						for(unsigned j = i + 1; j < v.size(); ++j)
+						{
+							v_temp.push_back(v.at(j));
+							
+						}
+					
+						return new_create_tree(v_temp);
+
+					}
+				}
+				else
+				{
+					if(connector == "||")
+					{
+						vector<string> v_temp;
+						unsigned k = 0;
+						for(unsigned j = i + 1; j < v.size(); ++j)
+						{
+							
+							if(v.at(j) == "||" || v.at(j) == "&&" || v.at(j) == ";")
+							{
+								k = j;
+							}
+														
+						}
+						if(k <= 0)
+						{
+							return true;
+						}
+						else
+						{
+							for(unsigned j = k + 1; j < v.size(); ++j)
+							{
+								v_temp.push_back(v.at(j));						
+							}
+						}	
+ 						
+						return new_create_tree(v_temp);
+
+						//return true;
+	
+					}
+					else if(connector == "&&")
+					{
+						if(i >= v.size())
+						{
+							//cout << "FLAG 3\n";
+							cout << "Error: invalid connector location\n";
+							return false;
+						}
+						vector<string> v_temp;
+						for(unsigned j = i + 1; j < v.size(); ++j)
+						{
+							v_temp.push_back(v.at(j));
+							
+						}
+						
+						return new_create_tree(v_temp);
+
+					}
+					else if(connector == ";")
+					{
+						if(i >= v.size())
+						{
+						//	cout << "FLAG 4\n";
+							cout << "Error: invalid connector location\n";
+							return false;
+						}
+						vector<string> v_temp;
+						for(unsigned j = i + 1; j < v.size(); ++j)
+						{
+							v_temp.push_back(v.at(j));
+							
+						}
+						
+						return new_create_tree(v_temp);
+
+					}
+				}
+			}
+
+
+		}
+		else
+		{
+			temp_cmd = temp_cmd + " " + v.at(i);
+		}
+	}
+
+	if(par_found(temp_cmd))
+	{
+		temp_cmd = replace_par(temp_cmd);
+	//	cout << temp_cmd << endl;
+
+				//if it does we will break it down again using parse
+		parse(temp_cmd);
+	}
+	else
+	{
+		parse_original(temp_cmd);
+	}
+
+	return true;
+}
 const int ARRAY_MAX = 20;
 
-vector<vector<string> >  make_com()
+bool make_com()
 {
 	string cmd;
 
@@ -163,15 +424,29 @@ vector<vector<string> >  make_com()
 
 	cout << "$ ";
 	getline(cin, cmd);
-	//cout << endl;
+	cout << endl;
 
-	if(check_par(cmd) == false)
+//	cout << "--------\nIn get_com()\n";
+
+	if(par_found(cmd) == false)
 	{
-		exit(1);
+		return parse_original(cmd);
 	}
-
 	
-	return parse(cmd);
+	else
+	{
+		if(check_par(cmd) == false)
+		{
+			return true;
+		}
+		cmd = replace_par(cmd);
+	//	cout << cmd << endl;
+	//		cout << cmd << endl;
+	
+		return parse(cmd);
+
+	}
+	return true;
 }
 
 bool create_tree(vector<vector<string> > v)
@@ -201,7 +476,21 @@ bool create_tree(vector<vector<string> > v)
 
 			if( ((i + 1) < v.size()) &&  ((v.at(i)).at(0) == "&&"))
 			{
-				Shell_Base* temp = new Command(v.at(i + 1));	
+				Shell_Base* temp;
+                if (!v.at(i + 1).empty() && v.at(i + 1).at(0) == "test")
+                {
+                    vector<string> test_v;
+                    for (unsigned j = 1; j < v.at(i + 1).size(); j++)
+                    {
+                        test_v.push_back(v.at(i + 1).at(j));
+                    }
+                    temp = new Test(test_v);
+                }
+                
+                else 
+                {
+                    temp = new Command(v.at(i + 1));
+                }    
 				
 				Shell_Base * a = new And(left, temp);
 				if(v.at(i + 1).at(0)  == exit)
@@ -223,7 +512,21 @@ bool create_tree(vector<vector<string> > v)
 			}
 			else if( ((i + 1) < v.size()) && ((v.at(i)).at(0) == "||"))   
 			{
-				Shell_Base* temp  =  new Command(v.at(i + 1));
+                Shell_Base* temp;
+                if (!v.at(i + 1).empty() && v.at(i + 1).at(0) == "test")
+                {
+                    vector<string> test_v;
+                    for (unsigned j = 1; j < v.at(i + 1).size(); j++)
+                    {
+                        test_v.push_back(v.at(i + 1).at(j));
+                    }
+                    temp = new Test(test_v);
+                }
+                
+                else 
+                {
+                    temp = new Command(v.at(i + 1));
+                }    
 
 				Shell_Base* a = new Or(left, temp);
 				if(v.at(i + 1).at(0)  == exit)
@@ -245,7 +548,22 @@ bool create_tree(vector<vector<string> > v)
 			}
 			else if( ((v.at(i)).at(0) == ";"))   
 			{
-				Shell_Base* temp = new Command(v.at(i + 1));
+                Shell_Base* temp;
+                if (!v.at(i + 1).empty() && v.at(i + 1).at(0) == "test")
+                {
+                    vector<string> test_v;
+                    for (unsigned j = 1; j < v.at(i + 1).size(); j++)
+                    {
+                        test_v.push_back(v.at(i + 1).at(j));
+                    }
+                    temp = new Test(test_v);
+                }
+                
+                else 
+                {
+                    temp = new Command(v.at(i + 1));
+                }    
+
 				Shell_Base* a = new Semi(left, temp);
 				
 				if(v.at(i + 1).at(0)  == exit)
@@ -276,7 +594,28 @@ bool create_tree(vector<vector<string> > v)
 		else
 		{
 
-			Shell_Base* a = new Command(v.at(i));
+			Shell_Base* a;
+            if (v.at(i).at(0) == "test")
+            {
+                vector<string> test_v;
+                for (unsigned j = 1; j < v.at(i).size(); j++)
+                {
+                    test_v.push_back(v.at(i).at(j));
+                }
+
+                a = new Test(test_v);
+            }
+
+            else if (v.at(i).at(0) == "exit")
+            {
+                return false;
+            }
+
+            else 
+            {
+                a = new Command(v.at(i));
+            }
+
 			if (i == 0 && v.at(i).at(0) != exit)
 				{a->execute();}
 
@@ -305,8 +644,10 @@ void rshell()
     bool test = true;	
   	do
    	{ 
-        test = create_tree(make_com());
+        test = make_com();
+	cout << endl;
    	} while (test);
+	cout << endl;
 }
 
 
@@ -407,11 +748,26 @@ int main()
     I->execute(); cout << endl;
     */
 
-	vector<vector<string> > temp = make_com();
-	print_parse(temp);
 
 	//print_parse(rshell());
 	
+    
+    // Test case for Test leaf class (uses a vector of strings with -f as its first element)
+    /*
+    vector<string> z;
+    string filepath = "/home/csmajs/cdele005/CS100/Lab6/composite.h";
+    z.push_back("-f");
+    z.push_back(filepath);
+
+    //cout << z.at(0) << ' ' << z.at(1) << endl;
+
+    Shell_Base * J = new Test(z);
+
+    J->execute();
+    */
+
+
+    //Running the whole file
     rshell();
 
 
