@@ -169,6 +169,24 @@ bool parse_original(string com)
 			v.push_back(v3);
 		
 	}
+    
+    for (unsigned k = 0; k < v.size(); k++)
+    {
+        if (v.at(k).at(0) == "[")
+        {
+            vector<string> x;
+            x.push_back("test");
+            for (unsigned l = 1; l < v.at(k).size(); l++)
+            {
+                if (v.at(k).at(l) != "]")
+                {
+                    x.push_back(v.at(k).at(l));
+                }
+            }
+
+            v.at(k) = x;
+        }
+    }   
 	return create_tree(v);
 
 }
