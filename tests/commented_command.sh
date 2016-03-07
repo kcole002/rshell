@@ -48,3 +48,19 @@ echo "****** testing command line: ls || echo OR && echo after exit && echo now 
 ./rshell.out <<'EOF'
 cd asdfg && echo AND && echo after exit && echo now exit; exit
 EOF
+
+
+echo
+echo
+echo "****** testing command line: ls || echo OR && test /home/csmajs/cdele005/CS100/Lab6/composite.cpp && echo now exit; exit"
+./rshell.out <<'EOF'
+cd asdfg && echo AND && echo after exit && echo now exit; exit
+EOF
+
+
+echo
+echo
+echo "****** testing command line: ls || echo OR && [/home/csmajs/cdele005/CS100/Lab6/composite.cpp] && echo now exit; exit"
+./rshell.out <<'EOF'
+cd asdfg && echo AND && echo after exit && echo now exit; exit
+EOF
