@@ -19,48 +19,57 @@ EOF
 
 echo
 echo
-echo "****** testing invalid command: || echo should not print; mkdir test"
+echo "****** testing: # echo A || echo should not print; mkdir test"
+echo
 ./rshell.out <<'EOF'
-|| echo should not print; mkdir test
+# echo A || echo should not print; mkdir test
 exit
 EOF
 
 echo
 echo
-echo "****** testing: echo ouput this; echo and this || echo not this; echo output this as well && echo this too"
+echo "****** testing: echo ouput this; echo and this || # echo not this; echo output this as well && echo this too"
+echo
 ./rshell.out <<'EOF'
-echo ouput this; echo and this || echo not this; echo output this as well && echo this too
+echo ouput this; echo and this || # echo not this; echo output this as well && echo this too
 exit
 EOF
 
 echo
 echo
-echo "****** testing ivalid command: && echo this; echo wont && echo even output"
+echo "****** testing: echo A && echo this; echo wont && # echo even output"
+echo
 ./rshell.out <<'EOF'
-&& echo this; echo wont && echo even output
+echo A && echo this; echo wont && # echo even output
 exit
 EOF
 
 
 echo
 echo
-echo "****** testing command line: ls || echo OR && echo after exit && echo now exit; exit"
+echo "****** testing command line: ls || echo OR && echo after #exit && echo now exit; # exit"
+echo
 ./rshell.out <<'EOF'
-cd asdfg && echo AND && echo after exit && echo now exit; exit
+ls || echo OR && echo after #exit && echo now exit; # exit
+exit
 EOF
 
 
 echo
 echo
-echo "****** testing command line: ls || echo OR && test /home/csmajs/cdele005/CS100/Lab6/composite.cpp && echo now exit; exit"
+echo "****** testing command line: ls || echo OR && # test /home/csmajs/cdele005/CS100/Lab6/composite.cpp && echo now exit; exit"
+echo
 ./rshell.out <<'EOF'
-cd asdfg && echo AND && echo after exit && echo now exit; exit
+ls && echo OR && # test /home/csmajs/cdele005/CS100/Lab6/composite.cpp && echo now exit; exit
+exit
 EOF
 
 
 echo
 echo
-echo "****** testing command line: ls || echo OR && [/home/csmajs/cdele005/CS100/Lab6/composite.cpp] && echo now exit; exit"
+echo "****** testing command line: ls &&  echo OR && [ /home/csmajs/cdele005/CS100/Lab6/composite.cpp ]"
+echo
 ./rshell.out <<'EOF'
-cd asdfg && echo AND && echo after exit && echo now exit; exit
+ls && echo OR && [ /home/csmajs/cdele005/CS100/Lab6/composite.cpp ]
+exit
 EOF

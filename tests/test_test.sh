@@ -27,9 +27,9 @@ EOF
 
 echo
 echo
-echo "****** bracket test : [/home/csmajs/cdele005/CS100/Lab6/composite.cpp] "
+echo "****** bracket test : [ /home/csmajs/cdele005/CS100/Lab6/composite.cpp ] "
 ./rshell.out <<'EOF'
-[/home/csmajs/cdele005/CS100/Lab6/composite.cpp]
+[ /home/csmajs/cdele005/CS100/Lab6/composite.cpp ]
 exit
 EOF
 
@@ -44,10 +44,9 @@ EOF
 
 echo
 echo
-echo "****** bracket with connectors test: [/home/csmajs/cdele005/CS100/Lab6/composite.cp] && echo path exists"
+echo "****** bracket with connectors test: [ /home/csmajs/cdele005/CS100/Lab6/composite.cp ] && echo path exists"
 ./rshell.out <<'EOF'
-cd asdfg && echo AND && echo after exit && echo now exit; exit
-[/home/csmajs/cdele005/CS100/Lab6/composite.cp] && echo path exists
+[ /home/csmajs/cdele005/CS100/Lab6/composite.cp ] && echo path exists
 exit
 EOF
 

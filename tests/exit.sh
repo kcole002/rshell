@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-cd ../src
+cd ../src/
 make all
 
 
@@ -21,6 +21,7 @@ EOF
 echo
 echo
 echo "****** testing command: echo exit after this; exit && mkdir test"
+echo
 ./rshell.out <<'EOF'
 echo exit after this; exit && mkdir test
 EOF
@@ -28,6 +29,7 @@ EOF
 echo
 echo
 echo "****** testing: echo ouput this; echo and this || exit; echo output this as well && echo this too"
+echo
 ./rshell.out <<'EOF'
 echo ouput this; echo and this || exit; echo output this as well && echo this too
 EOF
@@ -35,15 +37,10 @@ EOF
 echo
 echo
 echo "****** testing command: echo this; echo will && echo exit now && exit"
+echo
 ./rshell.out <<'EOF'
 echo this; echo will && echo exit now && exit
-exit
 EOF
 
 
-echo
-echo
-echo "****** testing command line: ls || exit && ls -a # cd assn"
-./rshell.out <<'EOF'
-ls || exit && ls -a # cd assn
-EOF
+

@@ -318,7 +318,7 @@ class Test : public Shell_Base
         {
             if (v.empty())
             {
-                cout << "(FALSE)" << endl;
+                cout << "(False)" << endl;
             }
 
             else
@@ -337,24 +337,24 @@ class Test : public Shell_Base
 
                         if (stat(pathname.c_str(), &sb) == -1)
                         {   
-                            executed = 1;
+                            executed = 0;
                         }
 
                         else 
                         {
-                            executed = 0;
+                            executed = 1;
                         }
 
                         if (S_ISREG(sb.st_mode))
                         {
-                            executed = 0;
-                            cout << "(TRUE)" << endl;
+                            executed = 1;
+                            cout << "(True)" << endl;
                         }
 
                         else 
                         {
-                            executed = 1;
-                            cout << "(FALSE)" << endl;
+                            executed = 0;
+                            cout << "(False)" << endl;
                         }
                         
                     }
@@ -375,24 +375,24 @@ class Test : public Shell_Base
 
                         if (stat(pathname.c_str(), &sb) == -1)
                         {
-                            executed = 1;
+                            executed = 0;
                         }
 
                         else 
                         {
-                            executed = 0;
+                            executed = 1;
                         }
 
                         if (S_ISDIR(sb.st_mode) )
                         {
-                            executed = 0;
-                            cout << "(TRUE)" << endl;
+                            executed = 1;
+                            cout << "(True)" << endl;
                         }
 
                         else 
                         {
-                            executed = 1;
-                            cout << "(FALSE)" << endl;
+                            executed = 0;
+                            cout << "(False)" << endl;
                         }
 
                     }
@@ -407,7 +407,7 @@ class Test : public Shell_Base
                     {
                         if (v.size() < 2)
                         {
-                            executed = 1;
+                            executed = 0;
                             cout << "Error--there is no filepath specified for test -f" << endl;
                         }
 
@@ -421,7 +421,7 @@ class Test : public Shell_Base
                     {
                         if (v.size() < 1)
                         {
-                            executed = 1;
+                            executed = 0;
                             cout << "Error--there is no filepath specified for test command." << endl;
                         }
 
@@ -435,14 +435,14 @@ class Test : public Shell_Base
                     {
                         if (stat(pathname.c_str(), &sb) == -1)
                         {
-                            executed = 1;
-                            cout << "(FALSE)" << endl;
+                            executed = 0;
+                            cout << "(False)" << endl;
                         }
 
                         else 
                         {
-                            executed = 0;
-                            cout << "(TRUE)" << endl;
+                            executed = 1;
+                            cout << "(True)" << endl;
                         }
                     }
                 }
