@@ -75,7 +75,7 @@ class Command : public Shell_Base
                         int s = execvp(args[0], args);
                     
                         if (s == -1)
-                            {perror("exec");}
+                            {/*perror("exec");*/}
 
                         exit(errno);
                                    
